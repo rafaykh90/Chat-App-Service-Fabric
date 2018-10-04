@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.ServiceFabric" Version="2.0.0" />
+    <PackageReference Include="Microsoft.ServiceFabric" Version="6.3.187" />
+    <PackageReference Include="Microsoft.ServiceFabric.Actors" Version="3.2.187" />
+    <PackageReference Include="Microsoft.ServiceFabric.Diagnostics.Internal" Version="3.2.187" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="3.2.187" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="3.2.187" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChatApplication.Models\ChatApplication.Models.csproj" />
+  </ItemGroup>
+
+</Project>
