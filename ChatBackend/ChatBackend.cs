@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using Autofac.Extensions.DependencyInjection;
 
 namespace ChatBackend
 {
@@ -38,10 +39,9 @@ namespace ChatBackend
                         return new WebHostBuilder()
                                     .UseKestrel()
                                     .ConfigureServices(
-                                        services => services
+                                        services => services.AddAutofac()
 										.AddSingleton<FabricClient>(new FabricClient())
 										.AddSingleton<StatelessServiceContext>(serviceContext))
-											//.AddTransient<IProxyFactoryProvider, ProxyFactoryProvider>())
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)

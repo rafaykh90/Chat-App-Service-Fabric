@@ -14,6 +14,7 @@
     <PackageReference Include="Microsoft.ServiceFabric.Diagnostics.Internal" Version="3.2.187" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" Version="3.2.187" />
     <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="3.2.187" />
+    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
   </ItemGroup>
 
   <ItemGroup>

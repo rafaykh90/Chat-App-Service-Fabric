@@ -22,15 +22,15 @@ namespace ChatApplication.ChatService
 	{
 		private readonly string _chattableName;
 		private readonly CloudTableClient _tableClient;
-		private readonly IConfiguration _configuration;
+		//private readonly IConfiguration _configuration;
 
 		public ChatMessageRepository()
 		{
 			//_configuration = configuration;
 
-			var accountName = "";
-			var accountKey = "";
-			_chattableName = "";
+			var accountName = "rafayasgnsa01";
+			var accountKey = "F09/PvDJ4zMNplSsdcIDYXivaJnsmdAH8T/SviGml1I/Hjbcpbl2yBstUp2Gc23OJz3e26fzhTST4AxnMJfcCQ==";
+			_chattableName = "chatMessages";
 
 			var storageCredentials = new StorageCredentials(accountName, accountKey);
 			var storageAccount = new CloudStorageAccount(storageCredentials, true);

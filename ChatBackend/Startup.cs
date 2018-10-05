@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using ChatApplication.ChatService;
 using ChatApplication.UserService;
 using ChatBackend.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.ServiceFabric.Services.Remoting.Client;
+using System;
 
 namespace ChatBackend
 {
@@ -26,13 +22,33 @@ namespace ChatBackend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+		public IContainer ApplicationContainer { get; private set; }
+
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-			services.AddTransient<IUserService, UserService>();
-			services.AddTransient<IUserTracker, UserTracker>();
-			services.AddTransient<IChatService, ChatService>();
+			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+			services.AddMvc();
+			services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAllOrigins",
+				config => config.AllowAnyOrigin()
+				.AllowAnyHeader()
+				.AllowAnyMethod()
+				.AllowCredentials());
+			});
+			services.AddSignalR();
+
+			var builder = new ContainerBuilder();
+			builder.Populate(services);
+			builder.RegisterType<UserService>().As<IUserService>();
+			builder.RegisterType<UserTracker>().As<IUserTracker>();
+			builder.RegisterType<ChatService>().As<IChatService>();
+			this.ApplicationContainer = builder.Build();
+
+			// Create the IServiceProvider based on the container.
+			return new AutofacServiceProvider(this.ApplicationContainer);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +59,21 @@ namespace ChatBackend
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+			app.UseCors("AllowAllOrigins");
+
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<ChatHub>("/chat");
+			});
+
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(
+					name: "default",
+					template: "{controller}/{action=Index}/{id?}");
+			});
+
+			app.UseMvc();
         }
     }
 }

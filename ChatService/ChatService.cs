@@ -22,10 +22,10 @@ namespace ChatApplication.ChatService
 	public class ChatService : StatelessService, IChatService
     {
 		private readonly IChatMessageRepository _repository;
-		public ChatService(StatelessServiceContext context, IChatMessageRepository repository)
+		public ChatService(StatelessServiceContext context)
             : base(context)
         {
-			_repository = repository;
+			_repository = new ChatMessageRepository();
 		}
 
 		public async Task<ChatMessage> CreateNewMessage(string senderName, string message)

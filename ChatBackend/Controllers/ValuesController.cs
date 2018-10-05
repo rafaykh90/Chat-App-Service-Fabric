@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Linq;
 using System.Threading.Tasks;
+using ChatApplication.ChatService;
 using ChatApplication.Models;
 using ChatApplication.UserService;
+using ChatBackend.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
@@ -16,27 +18,21 @@ namespace ChatBackend.Controllers
     public class ValuesController : Controller
     {
 		private readonly IUserService _userService;
-		//private readonly FabricClient fabricClient;
-		//private readonly string reverseProxyBaseUri;
-		//private readonly StatelessServiceContext serviceContext;
+		private readonly IChatService _chatService;
+		private readonly IUserTracker _userTracker;
 
-		public ValuesController(/*StatelessServiceContext context, FabricClient fabricClient*/IUserService userService)
+		public ValuesController(IUserService userService, IChatService chatService, IUserTracker userTracker)
 		{
 			_userService = userService;
-			//this.fabricClient = fabricClient;
-			//this.serviceContext = context;
-			//this.reverseProxyBaseUri = "http://localhost:19081/";//Environment.GetEnvironmentVariable("ReverseProxyBaseUri");
+			_chatService = chatService;
+			_userTracker = userTracker;
 		}
 
 		// GET api/values
 		[HttpGet]
-        public IEnumerable<UserDetails> Get()
+        public IEnumerable<ChatMessage> Get()
         {
-			//Uri serviceName = ChatBackend.GetUserServiceName(this.serviceContext);
-			//Uri proxyAddress = this.GetProxyAddress(serviceName);
-			//var service = new ServiceProxyFactory().CreateServiceProxy<IUserService>(proxyAddress);
-
-			return _userService.UsersOnline();
+			return _chatService.GetAllInitially().Result;
 		}
 
         // GET api/values/5
@@ -63,10 +59,5 @@ namespace ChatBackend.Controllers
         public void Delete(int id)
         {
         }
-
-		//private Uri GetProxyAddress(Uri serviceName)
-		//{
-		//	return new Uri($"{this.reverseProxyBaseUri}{serviceName.AbsolutePath}");
-		//}
 	}
 }

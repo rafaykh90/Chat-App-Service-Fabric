@@ -18,7 +18,7 @@ namespace ChatBackend.Hubs
 
 	public class UserTracker : IUserTracker
 	{
-		private static ConcurrentBag<UserDetails> joinedUsers = new ConcurrentBag<UserDetails>();
+		//private static ConcurrentBag<UserDetails> joinedUsers = new ConcurrentBag<UserDetails>();
 		private readonly IHubContext<ChatHub> _chatHubContext;
 		private readonly IUserService _userService;
 
