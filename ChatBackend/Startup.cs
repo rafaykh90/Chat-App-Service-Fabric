@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ChatApplication.ChatService;
+using ChatApplication.Modules;
 using ChatApplication.UserService;
 using ChatBackend.Hubs;
 using Microsoft.AspNetCore.Builder;
@@ -42,9 +43,8 @@ namespace ChatBackend
 
 			var builder = new ContainerBuilder();
 			builder.Populate(services);
-			builder.RegisterType<UserService>().As<IUserService>();
+			builder.RegisterModule(new ServicesModule());
 			builder.RegisterType<UserTracker>().As<IUserTracker>();
-			builder.RegisterType<ChatService>().As<IChatService>();
 			this.ApplicationContainer = builder.Build();
 
 			// Create the IServiceProvider based on the container.

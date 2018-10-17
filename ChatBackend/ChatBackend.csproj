@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+    <UserSecretsId>bf951b48-db74-400d-90a8-0a6dd07eb3b7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,8 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChatService\ChatService.csproj" />
-    <ProjectReference Include="..\UserService\UserService.csproj" />
+    <ProjectReference Include="..\ChatApplication.Modules\ChatApplication.Modules.csproj" />
   </ItemGroup>
 
 </Project>
